@@ -3,6 +3,7 @@ const router = express.Router();
 const models = require('../models');
 const product = require('../models/product');
 
+
 router.get('/', (req,res,next)=>{
     models.Product.findAll()
         .then((product)=>{
