@@ -1,9 +1,22 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const router = express.Router();
+const {sequelize} = require('./models');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+sequelize.sync({force: false})
+    .then(()=>{
+        console.log("DB Connected Success");
+    })
+    .catch((err)=> {
+        console.error(err);
+    });
+
+
+app.use('/users', require('./routes/users'));
 
 
 app.get('/', (req, res) => {
