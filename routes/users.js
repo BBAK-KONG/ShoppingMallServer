@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models');
 
-// 유저 전체 조회
+// 회원 전체 조회
 router.get('/', (req, res, next) => {
     models.User.findAll()
       .then((users) => {
@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
   });
   
   // 회원가입
-  router.post('/register', (req, res, next) => {
+  router.post('/', (req, res, next) => {
     models.User.create({
         user_id : req.body.user_id,
         password : req.body.password,
@@ -35,8 +35,8 @@ router.get('/', (req, res, next) => {
       })
   })
 
-   // 유저 수정
-   router.put('/update/:user_id', (req, res, next) => {
+   // 회원정보 수정
+   router.put('/:user_id', (req, res, next) => {
     models.User.update({
         user_id : req.body.user_id,
         password : req.body.password,
@@ -57,6 +57,23 @@ router.get('/', (req, res, next) => {
         next(err);
       })
   })
+
+  //회원 삭제
+  router.delete('/:user_id', (req, res, next) => {
+    models.User.destroy({
+      where : { user_id : req.params.user_id }
+    }) 
+      .then((result) => {
+        console.log(result);
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        console.error(err);
+        next(err);
+      })
+  })
+
+  
 
   
 
