@@ -17,6 +17,8 @@ module.exports = function(sequelize, DataTypes) {
     sequelize,
     tableName: 'point',
     timestamps: false,
+    charset:'utf8',
+    collate: 'uft8_general_ci',
     indexes: [
       {
         name: "user_id3_idx",
