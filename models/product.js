@@ -2,7 +2,8 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('product', {
     product_id: {
-      type: DataTypes.STRING(50),
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
@@ -30,8 +31,6 @@ module.exports = function(sequelize, DataTypes) {
     sequelize,
     tableName: 'product',
     timestamps: false,
-    charset:'utf8',
-    collate: 'uft8_general_ci',
     indexes: [
       {
         name: "PRIMARY",

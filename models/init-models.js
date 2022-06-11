@@ -23,7 +23,7 @@ function initModels(sequelize) {
   order_imformation.belongsTo(user, { as: "user_id2_user", foreignKey: "user_id2"});
   user.hasMany(order_imformation, { as: "order_imformations", foreignKey: "user_id2"});
   point.belongsTo(user, { as: "user_id3_user", foreignKey: "user_id3"});
-  user.hasMany(point, { as: "points", foreignKey: "user_id3"});
+  user.hasOne(point, { as: "point", foreignKey: "user_id3"});
   shopping_basket.belongsTo(user, { as: "user", foreignKey: "user_id"});
   user.hasMany(shopping_basket, { as: "shopping_baskets", foreignKey: "user_id"});
 

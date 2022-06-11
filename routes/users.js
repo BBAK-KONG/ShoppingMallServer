@@ -26,7 +26,7 @@ router.get('/:user_id/profiles' , (req,res,next)=>{
         console.error(err);
         next(err);
     })
-})
+});
 
 
 // 회원가입
@@ -48,7 +48,7 @@ router.post('/', (req, res, next) => {
         console.error(err);
         next(err);
       })
-    })
+});
 
 
 // 회원정보 수정
@@ -72,9 +72,9 @@ router.put('/:user_id', (req, res, next) => {
         console.error(err);
         next(err);
       })
-  })
+});
 
-  
+
 //회원 삭제
 router.delete('/:user_id', (req, res, next) => {
     models.User.destroy({
@@ -88,7 +88,7 @@ router.delete('/:user_id', (req, res, next) => {
         console.error(err);
         next(err);
       })
-  })
+ });
 
   
 

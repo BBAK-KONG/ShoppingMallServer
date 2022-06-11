@@ -20,23 +20,17 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     product_id: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'product',
         key: 'product_id'
       }
-    },
-    sum: {
-      type: DataTypes.INTEGER,
-      allowNull: false
     }
   }, {
     sequelize,
     tableName: 'shopping_basket',
     timestamps: false,
-    charset:'utf8',
-    collate: 'uft8_general_ci',
     indexes: [
       {
         name: "PRIMARY",
@@ -54,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "product_id_idx",
+        name: "product_id_id",
         using: "BTREE",
         fields: [
           { name: "product_id" },

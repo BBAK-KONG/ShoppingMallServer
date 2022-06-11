@@ -7,7 +7,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     user_id3: {
       type: DataTypes.STRING(45),
-      allowNull: true,
+      allowNull: false,
+      primaryKey: true,
       references: {
         model: 'user',
         key: 'user_id'
@@ -17,9 +18,15 @@ module.exports = function(sequelize, DataTypes) {
     sequelize,
     tableName: 'point',
     timestamps: false,
-    charset:'utf8',
-    collate: 'uft8_general_ci',
     indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "user_id3" },
+        ]
+      },
       {
         name: "user_id3_idx",
         using: "BTREE",
