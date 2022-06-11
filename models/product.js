@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    imformation: {
+    information: {
       type: DataTypes.STRING(45),
       allowNull: false
     },

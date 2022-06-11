@@ -34,13 +34,14 @@ router.get('/:product_id/imformation' , (req,res,next)=>{
 // 상품 등록
 router.post('/', (req, res, next) => {
     models.Product.create({
-        product_id : req.body.pro,
-        password : req.body.password,
+
+        product_id : null,
         name : req.body.name,
-        phone : req.body.phone,
-        address : req.body.address,
-        gender : req.body.gender,
-        email : req.body.email
+        image : req.body.image,
+        price : req.body.price,
+        information : req.body.information,
+        quantity : req.body.quantity,
+
     })
       .then((result) => {
         console.log(result);
@@ -51,5 +52,46 @@ router.post('/', (req, res, next) => {
         next(err);
       })
 });
+
+
+// 상품 정보 수정
+router.put('/:product_id', (req, res, next) => {
+    models.Product.update({
+
+        name : req.body.name,
+        image : req.body.image,
+        price : req.body.price,
+        information : req.body.information,
+        quantity : req.body.quantity,
+        
+    }, {
+        where : { product_id : req.params.product_id },
+    })
+      .then((result) => {
+        console.log(result);
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        console.error(err);
+        next(err);
+      })
+});
+
+
+//상품 삭제
+router.delete('/:product_id', (req, res, next) => {
+    models.Product.destroy({
+      where : { product_id : req.params.product_id }
+    }) 
+      .then((result) => {
+        console.log(result);
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        console.error(err);
+        next(err);
+      })
+ });
+
 
 module.exports = router;

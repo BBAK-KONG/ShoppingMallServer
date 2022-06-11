@@ -32,6 +32,7 @@ router.get('/:user_id/profiles' , (req,res,next)=>{
 // 회원가입
 router.post('/', (req, res, next) => {
     models.User.create({
+
         user_id : req.body.user_id,
         password : req.body.password,
         name : req.body.name,
@@ -54,6 +55,7 @@ router.post('/', (req, res, next) => {
 // 회원정보 수정
 router.put('/:user_id', (req, res, next) => {
     models.User.update({
+
         user_id : req.body.user_id,
         password : req.body.password,
         name : req.body.name,
@@ -61,6 +63,7 @@ router.put('/:user_id', (req, res, next) => {
         address : req.body.address,
         gender : req.body.gender,
         email : req.body.email
+        
     }, {
         where : { user_id : req.params.user_id },
     })
