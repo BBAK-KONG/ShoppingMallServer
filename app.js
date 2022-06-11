@@ -16,8 +16,8 @@ sequelize.sync({force: false})
     });
 
 
-app.use('/users', require('./routes/users'));
-
+app.use('/user', require('./routes/users'));
+app.use('/product',require('./routes/products'));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/html', 'sample202_35.html'));
