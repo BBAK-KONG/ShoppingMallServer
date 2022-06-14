@@ -42,7 +42,6 @@ router.post("/register", async(req, res) => {
         result: false,
         message: "이미 존재하는 아이디입니다.",
       });
-
       return;
     } 
   });
