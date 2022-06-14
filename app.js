@@ -5,13 +5,14 @@ const router = express.Router();
 const { sequelize } = require("./models");
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
+const cors = require('cors');
 
 require('dotenv').config();  //.env 파일에서 환경변수 가져오기
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 

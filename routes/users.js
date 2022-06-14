@@ -4,6 +4,7 @@ const models = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+
 // 회원 전체 조회
 router.get("/", (req, res, next) => {
   models.User.findAll()
@@ -67,7 +68,7 @@ router.post("/register", async(req, res) => {
      .catch((err) => {
        console.log(err);
        res.status(500).send({
-       
+        result : false,
          message: "회원가입하는데 오류가 발생하였습니다.",
        });
      });
@@ -85,7 +86,6 @@ router.post("/login", (req, res, next) => {
   } else {
     req.session.user = {
       id: Id,
-      name: "zini",
       authorized: true,
     };
     res.writeHead("200", {
