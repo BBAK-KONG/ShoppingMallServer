@@ -39,6 +39,7 @@ router.post("/", (req, res, next) => {
     address: req.body.address,
     gender: req.body.gender,
     email: req.body.email,
+    birth : req.body.birth
   })
     .then((result) => {
       console.log(result);
@@ -93,8 +94,8 @@ router.delete("/:user_id", (req, res, next) => {
 
 // 로그인
 router.post("/login", (req, res, next) => {
-  var paramId = req.body.id || req.query.id;
-  var paramPw = req.body.password || req.query.password;
+  var paramId = req.body.id ;
+  var paramPw = req.body.password ;
 
   if (req.session.user) {
     console.log("이미 로그인되어 상품페이지로 이동");
@@ -119,6 +120,7 @@ router.post("/login", (req, res, next) => {
   }
 });
 
+// 로그인된 상태가 아니면 로그인페이지로 링크
 router.route("/product").get(function (req, res) {
   console.log("/product 호출됨");
   if (req.session.user) {
