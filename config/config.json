@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "0000",
+    "password": "00000000",
     "database": "shoppingmalldata",
-    "host": "127.0.0.1",
+    "host": "database-1.czt7kwwu5evj.ap-northeast-2.rds.amazonaws.com",
     "dialect": "mysql"
   },
   "test": {

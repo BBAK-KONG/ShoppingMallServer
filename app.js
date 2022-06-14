@@ -6,7 +6,7 @@ const { sequelize } = require("./models");
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 
-
+require('dotenv').config();  //.env 파일에서 환경변수 가져오기
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
