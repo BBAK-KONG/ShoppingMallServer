@@ -29,26 +29,42 @@ router.get("/:user_id/profiles", (req, res, next) => {
     });
 });
 
-// 회원가입
+// 회원가입 - id중복 확인 후 가입
 router.post("/", (req, res, next) => {
-  models.User.create({
-    user_id: req.body.user_id,
-    password: req.body.password,
-    name: req.body.name,
-    phone: req.body.phone,
-    address: req.body.address,
-    gender: req.body.gender,
-    email: req.body.email,
-    birth : req.body.birth
+
+  models.User.findOne({
+    where : {user_id : req.body.user_id }
   })
-    .then((result) => {
-      console.log(result);
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      console.error(err);
-      next(err);
-    });
+  .then((data) => {
+
+    if(data) {      //중복되는 아이디가 있을때
+      res.status(400).json({
+        result : false,
+        message : "이미 존재하는 아이디입니다."
+      })
+    }
+    else {
+      models.User.create({
+        user_id: req.body.user_id,
+        password: req.body.password,
+        name: req.body.name,
+        phone: req.body.phone,
+        address: req.body.address,
+        gender: req.body.gender,
+        email: req.body.email,
+        birth : req.body.birth
+      })
+        .then((result) => {
+          console.log(result);
+          res.status(200).json(result);
+        })
+        .catch((err) => {
+          console.error(err);
+          next(err);
+        });
+    }
+  })
+ 
 });
 
 // 회원정보 수정
@@ -100,7 +116,8 @@ router.post("/login", (req, res, next) => {
   if (req.session.user) {
     console.log("이미 로그인되어 상품페이지로 이동");
     res.redirect("/public/html/product.html");
-  } else {
+  } 
+  else {
     req.session.user = {
       id: paramId,
       name: "zini",
@@ -118,6 +135,7 @@ router.post("/login", (req, res, next) => {
     );
     res.end();
   }
+
 });
 
 // 로그인된 상태가 아니면 로그인페이지로 링크
