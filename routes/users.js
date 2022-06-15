@@ -4,7 +4,6 @@ const models = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-
 // 회원 전체 조회
 router.get("/", (req, res, next) => {
   models.User.findAll()
@@ -32,7 +31,7 @@ router.get("/:user_id/profiles", (req, res, next) => {
 });
 
 // 회원가입 - id중복 확인 후 가입
-router.post("/register", async(req, res) => {
+router.post("/register", async (req, res) => {
   models.User.findOne({
     where: { user_id: req.body.user_id },
   }).then((data) => {
@@ -43,61 +42,88 @@ router.post("/register", async(req, res) => {
         message: "이미 존재하는 아이디입니다.",
       });
       return;
-    } 
+    }
   });
 
-   // 해시함수 10번돌려서 password 암호화
-      
-   const hashedPassword =  await bcrypt.hash(req.body.password, 10);
-    
-   const userInfo = {
-     user_id: req.body.user_id,
-     password: hashedPassword,
-     name: req.body.name,
-     phone: req.body.phone,
-     address: req.body.address,
-     gender: req.body.gender,
-     email: req.body.email,
-     birth: req.body.birth,
-   };
-   models.User.create(userInfo)
-     .then((result) => {
-       res.status(200).json(result);
-     })
-     .catch((err) => {
-       console.log(err);
-       res.status(500).send({
-        result : false,
-         message: "회원가입하는데 오류가 발생하였습니다.",
-       });
-     });
-   
+  // 해시함수 10번돌려서 password 암호화
+  const hashedPassword =  bcrypt.hashSync(req.body.password, 10);
+
+  const userInfo = {
+    user_id: req.body.user_id,
+    password: hashedPassword,
+    name: req.body.name,
+    phone: req.body.phone,
+    address: req.body.address,
+    gender: req.body.gender,
+    email: req.body.email,
+    birth: req.body.birth,
+  };
+  models.User.create(userInfo)
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({
+        result: false,
+        message: "회원가입하는데 오류가 발생하였습니다.",
+      });
+    });
 });
 
 // 로그인
-router.post("/login", (req, res, next) => {
-  var Id = req.body.id;
-  var Password = req.body.password;
+router.post("/login", async (req, res, next) => {
+  var inputId = req.body.user_id;
+  var inputPassword = req.body.password;
 
   if (req.session.user) {
-    console.log("이미 로그인되어 상품페이지로 이동");
-    res.redirect("/public/html/product.html");
+    res.status(500).send({
+      message: "이미 로그인 되어있습니다.",
+    });
   } else {
     req.session.user = {
-      id: Id,
+      id: inputId,
       authorized: true,
     };
-    res.writeHead("200", {
-      "Content-Type": "text/html;charset=utf8",
-    });
 
-    res.write("<h1>로그인 성공</h1>");
-    res.write("<div><p>Param ID: " + paramId + "</p></div>");
-    res.write("<div><p>Param PW: " + paramPw + "</p></div>");
-    res.write(
-      "<br><a href=http://localhost:3000/product'>상품 페이지로 이동</a>"
-    );
-    res.end();
+    models.User.findOne({
+      where: { user_id: inputId },
+    })
+      .then((data) => {
+        if (data) {
+          let dbPassword = data.get("password");
+    
+          const isEqualPassword =  bcrypt.compareSync(inputPassword, dbPassword);
+          
+          const hashedPassword =  bcrypt.hashSync(inputPassword, 10);
+
+
+          if (isEqualPassword) {
+            return res.status(200).json({
+              message: "로그인 성공",
+              status: "success",
+              
+            });
+          } else {
+            return res.status(400).json({
+              message: "비밀번호가 틀립니다",
+              status: "fail"
+            });
+          }
+
+        }
+        else{
+          return res.status(401).json({
+            message : "존재하지 않은 회원입니다"
+          })
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send({
+          message: "회원가입 서버 오류",
+        });
+      });
   }
 });
 
