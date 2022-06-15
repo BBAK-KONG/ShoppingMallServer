@@ -101,27 +101,29 @@ router.post("/login", async (req, res, next) => {
           if (isEqualPassword) {
             return res.status(200).json({
               message: "로그인 성공",
-              status: "success",
+              status: true,
               
             });
           } else {
             return res.status(400).json({
               message: "비밀번호가 틀립니다",
-              status: "fail"
+              status: false
             });
           }
 
         }
         else{
           return res.status(401).json({
-            message : "존재하지 않은 회원입니다"
-          })
+            message : "존재하지 않은 회원입니다",
+            status: false
+          });
         }
       })
       .catch((err) => {
         console.log(err);
         res.status(500).send({
           message: "회원가입 서버 오류",
+          status: false
         });
       });
   }
