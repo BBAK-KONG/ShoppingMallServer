@@ -81,15 +81,11 @@ router.post("/login", async (req, res, next) => {
   var inputId = req.body.user_id;
   var inputPassword = req.body.password;
 
-  if (req.session.user) {
+  if (req.session.islogined) {
     res.status(500).send({
       message: "이미 로그인 되어있습니다.",
     });
   } else {
-    req.session.user = {
-      id: inputId,
-      authorized: true,
-    };
 
     models.User.findOne({
       where: { user_id: inputId },
@@ -103,6 +99,10 @@ router.post("/login", async (req, res, next) => {
           const hashedPassword =  bcrypt.hashSync(inputPassword, 10);
 
           if (isEqualPassword) {
+
+            req.session.id = inputId;  // 세션에 id저장
+            req.session.islogined = true; // 세션에 로그인된 id 저장
+         
             return res.status(200).json({
               message: "로그인 성공",
               status: true,
@@ -132,27 +132,19 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-// 로그인된 상태가 아니면 로그인페이지로 링크
-router.route("/product").get(function (req, res) {
-  console.log("/product 호출됨");
-  if (req.session.user) {
-    res.redirect("/public/html/product.html");
-  } else {
-    res.redirect("/public/html/login.html");
-  }
-});
+
 
 // 로그아웃
 router.route("/logout").get(function (req, res) {
   console.log("/logout 호출됨");
 
-  if (req.session.user) {
+  if (req.session.islogined) {
     console.log("로그아웃");
 
     req.session.destroy(function (err) {
       if (err) throw err;
       console.log("세션 삭제하고 로그아웃됨");
-      res.redirect("/public/html/login.html");
+   
     });
   } else {
     console.log("로그인 상태 아님");
