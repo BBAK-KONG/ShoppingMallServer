@@ -22,16 +22,26 @@ router.post("/exist", (req, res, next) => {
     where: { user_id: req.body.user_id },
   })
     .then((users) => {
-      res.status(200).send({
-        message: "이미 존재하는 id입니다",
-        exist: true
-      });
+
+      if(users){
+        res.status(200).send({
+          message: "이미 존재하는 id입니다",
+          exist: true
+        });
+      }
+      else {
+        res.status(200).send({
+          message: "사용가능한 id입니다",
+          exist: false
+        });
+      }
+      
     })
     .catch((err) => {
       console.error(err);
       res.status(500).send({
-        message: "사용가능한 id입니다",
-        exist: false
+        message: "id확인 api 오류"
+
       });
     });
 });
