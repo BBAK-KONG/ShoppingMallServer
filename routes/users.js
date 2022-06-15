@@ -17,7 +17,7 @@ router.get("/", (req, res, next) => {
 });
 
 //회원 id로 회원정보 조회
-router.get("/register", (req, res, next) => {
+router.post("/exist", (req, res, next) => {
   models.User.findOne({
     where: { user_id: req.body.user_id },
   })
