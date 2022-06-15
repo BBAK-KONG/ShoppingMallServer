@@ -17,34 +17,29 @@ router.get("/", (req, res, next) => {
 });
 
 //회원 id로 회원정보 조회
-router.get("/:user_id/profiles", (req, res, next) => {
+router.get("/register", (req, res, next) => {
   models.User.findOne({
-    where: { user_id: req.params.user_id },
+    where: { user_id: req.body.user_id },
   })
     .then((users) => {
-      res.json(users);
+      res.status(200).send({
+        message: "이미 존재하는 id입니다",
+        exist: true
+      });
     })
     .catch((err) => {
       console.error(err);
-      next(err);
+      res.status(500).send({
+        message: "사용가능한 id입니다",
+        exist: false
+      });
     });
 });
 
-// 회원가입 - id중복 확인 후 가입
-router.post("/register", async (req, res) => {
-  models.User.findOne({
-    where: { user_id: req.body.user_id },
-  }).then((data) => {
-    if (data) {
-      //중복되는 아이디가 있을때
-      res.status(400).json({
-        result: false,
-        message: "이미 존재하는 아이디입니다.",
-      });
-      return;
-    }
-  });
 
+// 회원가입 
+router.post("/register", async (req, res) => {
+ 
   // 해시함수 10번돌려서 password 암호화
   const hashedPassword =  bcrypt.hashSync(req.body.password, 10);
 
@@ -97,7 +92,6 @@ router.post("/login", async (req, res, next) => {
           
           const hashedPassword =  bcrypt.hashSync(inputPassword, 10);
 
-
           if (isEqualPassword) {
             return res.status(200).json({
               message: "로그인 성공",
@@ -110,7 +104,6 @@ router.post("/login", async (req, res, next) => {
               status: false
             });
           }
-
         }
         else{
           return res.status(401).json({
