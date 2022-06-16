@@ -7,8 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const cors = require('cors');
 const { Cookie } = require("express-session");
-const FileStore = require('session-file-store')(session);;
-
+const FileStore = require('session-file-store')(session);
 
 require('dotenv').config();  //.env 파일에서 환경변수 가져오기
 
@@ -18,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'image')));
 app.use(cookieParser());
 
 app.use(session({
@@ -27,7 +26,12 @@ app.use(session({
   resave: false,  // 요청이 왔을때 세션을 수정하지 않더라도 다시 저장소에 저장되도록
   saveUninitialized:true,  // 세션이 필요하면 세션을 실행시칸다(서버에 부담을 줄이기 위해)
   store : new FileStore(),
-  cookie: {maxAge : 30000}
+  cookie: {
+    maxAge : 30000,
+    httpOnly : true,
+    Secure : true
+  }
+
 }));
 
 
@@ -45,6 +49,7 @@ sequelize
 app.use("/users", require("./routes/users")); // 유저
 app.use("/products", require("./routes/products")); // 상품
 app.use("/tokens", require("./routes/tokens")); // 토큰
+//app.use("/images",require("./routes/images")); // 이미지
 
 
 
