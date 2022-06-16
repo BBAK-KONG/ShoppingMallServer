@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/rong5026/ShoppingMall#readme",
   "dependencies": {
+    "aws-sdk": "^2.1155.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
@@ -28,6 +29,8 @@
     "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "mime": "^3.0.0",
+    "multiparty": "^4.2.3",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "redis": "^4.1.0",
