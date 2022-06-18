@@ -16,9 +16,10 @@ app.use(session({
   saveUninitialized: false,  // true하면 처음부터 서버에 세션저장
   store : new FileStore(),
   cookie: {
-    maxAge : 30000,
+    maxAge : 1000*60*60*5,
     httpOnly : false,   //true 하면 클라이언트에서 쿠기확인못함
-    Secure : false    // false하면 https가 아닌환경에서도 사용가능
+    Secure : true    // false하면 https가 아닌환경에서도 사용가능
+  
   }
 
 }));
@@ -26,7 +27,11 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors());
+app.use(cors({
+  origin : '*',
+  credentials :'true'
+
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'image')));
@@ -49,6 +54,7 @@ app.use("/users", require("./routes/users")); // 유저
 app.use("/products", require("./routes/products")); // 상품
 app.use("/tokens", require("./routes/tokens")); // 토큰
 app.use("/images",require("./routes/images")); // 이미지
+//app.use("basket",require("./routes/baskets")); //장바구니
 
 
 

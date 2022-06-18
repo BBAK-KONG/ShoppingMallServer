@@ -8,7 +8,10 @@ const bcrypt = require("bcrypt");
 router.get("/", (req, res, next) => {
   models.User.findAll()
     .then((users) => {
-      
+      req.session.user_id = "sdf";
+      req.session.is_logined=true;  // 세션에 로그인성공, 유저아이디
+
+      console.log(req.session);
       res.json(users);
     })
     .catch((err) => {
@@ -156,6 +159,12 @@ router.route("/logout").get(function (req, res) {
 
 // 회원정보 수정
 router.put("/:user_id", (req, res, next) => {
+
+  if (!req.session.islogined) {
+    res.status(500).send({
+      message: "로그인을 해주세요",
+    });
+  }
   models.User.update(
     {
       user_id: req.body.user_id,
