@@ -10,7 +10,7 @@ router.post("/add", async (req, res) => {
         product_id : req.body.product_id,
         count : req.body.count
     }
-  
+
     models.Basket.create(basketInfo)
       .then((result) => {
         res.status(200).json(result);
@@ -36,11 +36,6 @@ router.post("/add", async (req, res) => {
                 user_id : req.body.user_id
             }
         });
-    
-        console.log(Object.keys(productList).length);
-        
-        console.log(productList[0].product_id);
-
 
      
         var result = [];
@@ -61,6 +56,7 @@ router.post("/add", async (req, res) => {
             data.information = resultProduct.information;
             data.quantity = resultProduct.quantity;
            
+            result.push(data);
         }
 
         res.json(result);
