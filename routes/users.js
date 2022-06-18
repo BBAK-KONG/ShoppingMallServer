@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 router.get("/", (req, res, next) => {
   models.User.findAll()
     .then((users) => {
+      
       res.json(users);
     })
     .catch((err) => {
@@ -96,18 +97,19 @@ router.post("/login", async (req, res, next) => {
     
           const isEqualPassword =  bcrypt.compareSync(inputPassword, dbPassword);
           
-          const hashedPassword =  bcrypt.hashSync(inputPassword, 10);
-
           if (isEqualPassword) {
+            
+            req.session.user_id = inputId;
+            req.session.is_logined=true;  // 세션에 로그인성공, 유저아이디
 
-            req.session.id = inputId;  // 세션에 id저장
-            req.session.islogined = true; // 세션에 로그인된 id 저장
-         
+            console.log(req.session);
+
             return res.status(200).json({
               message: "로그인 성공",
               status: true,
               
             });
+            
           } else {
             return res.status(400).json({
               message: "비밀번호가 틀립니다",
@@ -125,7 +127,7 @@ router.post("/login", async (req, res, next) => {
       .catch((err) => {
         console.log(err);
         res.status(500).send({
-          message: "회원가입 서버 오류",
+          message: "로그인 서버 오류",
           status: false
         });
       });
@@ -191,6 +193,15 @@ router.delete("/:user_id", (req, res, next) => {
       console.error(err);
       next(err);
     });
+});
+
+//유저 받아온 세션확인
+router.get('/check', (req, res, next) => {
+  if(req.session.is_logined){
+    return res.json({message: 'user 있다'});
+  }else{
+    return res.json({message: 'user 없음'});
+  }
 });
 
 module.exports = router;
