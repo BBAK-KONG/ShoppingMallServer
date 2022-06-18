@@ -54,7 +54,7 @@ app.use("/users", require("./routes/users")); // 유저
 app.use("/products", require("./routes/products")); // 상품
 app.use("/tokens", require("./routes/tokens")); // 토큰
 app.use("/images",require("./routes/images")); // 이미지
-//app.use("basket",require("./routes/baskets")); //장바구니
+app.use("/baskets",require("./routes/baskets")); //장바구니
 
 
 
