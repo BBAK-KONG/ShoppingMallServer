@@ -54,7 +54,7 @@ router.post("/add", async (req, res) => {
             data.image = resultProduct.image;
             data.price =resultProduct.price;
             data.information = resultProduct.information;
-            data.quantity = resultProduct.quantity;
+            data.count = 1;
            
             result.push(data);
         }
